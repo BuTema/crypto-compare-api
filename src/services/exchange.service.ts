@@ -18,14 +18,19 @@ export async function getBestExchange(
   outputCurrency: string,
 ): Promise<EstimateInterface | String> {
   const rates = await getRates(inputCurrency, outputCurrency);
+  console.log('🚀 ~ Rates from exchanges:', rates);
 
   if (!Array.isArray(rates)) {
     return 'Unsupported currency';
   }
 
   const maxRate = rates.reduce((acc, curr) => {
-    return acc.exchangeRate > curr.exchangeRate ? acc : curr;
+    if (acc.exchangeRate > 0) {
+      return acc.exchangeRate > curr.exchangeRate ? acc : curr;
+    }
+    return acc.exchangeRate > curr.exchangeRate ? curr : acc;
   }, rates[0]);
+  console.log('🚀 ~ Max rate exchange:', maxRate);
 
   return {
     exchangeName: maxRate.exchangeName,
@@ -45,10 +50,12 @@ export async function getRates(
 ): Promise<GetRatesInterface[] | String> {
   const unsupported = checkCurrency([baseCurrency, quoteCurrency]);
   if (unsupported.length) {
+    console.log('🚀 ~ Found unsupported currency:', unsupported);
     return `Unsupported currency ${unsupported.join(', ')}`;
   }
 
   if (baseCurrency === quoteCurrency) {
+    console.log('🚀 ~ Same currency');
     return exchanges.map(exchange => ({
       exchangeName: exchange.name,
       exchangeRate: 1,

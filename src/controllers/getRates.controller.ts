@@ -5,9 +5,12 @@ import { GetRatesDTOInterface, GetRatesInterface } from 'src/models/getRates.mod
 const router = Router();
 
 router.get('/', async (req: { query: GetRatesDTOInterface }, res: Response) => {
-  console.log('🚀 ~ router.get ~ req:', req);
   const { baseCurrency, quoteCurrency } = req.query;
+  console.log('🚀 GET_RATES ENDPOINT Got from user:', { baseCurrency, quoteCurrency });
   const rates: GetRatesInterface[] | String = await getRates(baseCurrency, quoteCurrency);
+  if (typeof rates !== 'string') {
+    console.log('🚀 GET_RATES ENDPOINT Sending rates for user:', rates);
+  }
   res.json(rates);
 });
 

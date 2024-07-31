@@ -28,8 +28,10 @@ class BinanceService implements ExchangeInterface {
       this.getExchangeRate(quote, base),
     ]);
     if (!isNaN(rate)) {
+      console.log('🚀 ~ Token output BinanceService :', rate);
       return rate;
     }
+    console.log('🚀 ~ Token output BinanceService :', 1 / rateInverse);
     return 1 / rateInverse;
   }
 }
