@@ -1,0 +1,9 @@
+# compiled output
+/build
+/node_modules
+
+# prettier file
+prettier.config.js
+
+# env
+.env
